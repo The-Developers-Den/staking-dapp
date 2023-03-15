@@ -48,6 +48,11 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
     try {
       const tx = await stakingContract?.unStakeNFT(1);
       console.log(tx);
+      const approve = await nftContract?.setApprovalForAll(
+        StakingAbi.address,
+        false
+      );
+      console.log(tx);
     } catch (err) {
       console.log(err);
     }
