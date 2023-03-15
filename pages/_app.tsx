@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
+import { useEffect, useState } from "react";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { polygon, polygonMumbai } from "wagmi/chains";
@@ -23,12 +24,23 @@ const wagmiClient = createClient({
   provider,
 });
 export default function App({ Component, pageProps }: AppProps) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} modalSize="compact">
-        <Navbar />
-        <Component {...pageProps} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <>
+    {ready ? (
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains} modalSize="compact">
+          <Navbar />
+          <Component {...pageProps} />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    ) : (
+      <div className="flex justify-center text-2xl my-[50%]">Loading</div>
+    )}
+  </>
   );
 }
