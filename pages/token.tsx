@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
-import TokenAbi from "@/ABIs/BuidlNFT.json";
+import TokenAbi from "@/ABIs/BuidlToken.json";
 import { useAccount, useSigner, useContract } from "wagmi";
 import { ethers } from "ethers";
 

@@ -18,7 +18,7 @@ const Mint: NextPage = () => {
     try {
       const tx = await nftContract?.safeMint(
         address,
-        "https://bafkreibl3ntsvrilgz5kicqsq27zb26a3tpym3wx3kwxuerg6mpf5ge674.ipfs.nftstorage.link/"
+        "https://bafkreih73g4bdfee55w7izme3ryt6imjuh2nykdnxxpwe6eepdqrrkjcjm.ipfs.nftstorage.link/"
       );
       console.log(tx);
       //   router.push("/");

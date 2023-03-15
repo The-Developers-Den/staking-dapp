@@ -1,18 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
+import NFTAbi from "@/ABIs/BuidlNFT.json";
 import NFTCard from "../Cards/NFTCard";
+import { useAccount, useContract, useSigner } from "wagmi";
 
 const UnstakedNft = () => {
-  const nfts = [
-    "https://bafkreih73g4bdfee55w7izme3ryt6imjuh2nykdnxxpwe6eepdqrrkjcjm.ipfs.nftstorage.link/",
-    "https://bafkreidmg7cxmxvk4ezfma537c7rtgt4imoixugyhof7bxm5gcdtwcehna.ipfs.nftstorage.link/",
-    "https://bafkreih5iqfy6ei6xppvckkydsxcva627h2g43qemv5y4yc3ru6x4gwhwq.ipfs.nftstorage.link/",
-  ];
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
+  const [nfts, setNfts] = React.useState<string[]>([]);
+  const nftContract = useContract({
+    address: NFTAbi.address,
+    abi: NFTAbi.abi,
+    signerOrProvider: signer,
+  });
+
+  useEffect(() => {
+    if (address) {
+      const getNFTs = async () => {
+        try {
+          const tx1 = await nftContract?.balanceOf(address);
+          const index = tx1.toNumber();
+          for (let i = 0; i < index; i++) {
+            const tx = await nftContract?.tokenOfOwnerByIndex(address, i);
+            const tx2 = await nftContract?.tokenURI(tx.toNumber());
+            setNfts((prev) => [...prev, tx2]);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getNFTs();
+    }
+  }, [address, nftContract]);
+
   return (
     <div className="flex flex-col mx-auto text-center">
-      <h2 className="text-2xl">Your Staked NFTs</h2>
+      <h2 className="text-2xl">Your UnStaked NFTs</h2>
       <div className="flex mx-auto my-7">
         {nfts.map((nft, id) => (
-          <NFTCard key={id} url={nft} stake={true} />
+          <NFTCard key={id} url={nft} stake={true} tokenId={id} />
         ))}
       </div>
     </div>

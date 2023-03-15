@@ -4,7 +4,15 @@ import NFTAbi from "@/ABIs/BuidlNFT.json";
 import StakingAbi from "@/ABIs/Staking.json";
 import { useAccount, useContract, useSigner } from "wagmi";
 
-const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
+const NFTCard = ({
+  url,
+  stake,
+  tokenId,
+}: {
+  url: string;
+  stake: boolean;
+  tokenId: number;
+}) => {
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const stakingContract = useContract({
@@ -23,7 +31,7 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
     image: string;
     desc: string;
     tokenID?: number;
-  }>({ name: "", image: "", desc: "", tokenID: 2 });
+  }>({ name: "", image: "", desc: "", tokenID: tokenId });
   const stakeNft = async () => {
     try {
       const approve = await nftContract?.isApprovedForAll(
@@ -32,21 +40,22 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
       );
       console.log(approve);
       if (!approve) {
-        const tx = await nftContract?.setApprovalForAll(
+        const tx1 = await nftContract?.setApprovalForAll(
           StakingAbi.address,
           true
         );
-        console.log(tx);
       }
-      const tx = await stakingContract?.stakeNFT(1);
-      console.log(tx);
+      setTimeout(async () => {
+        const tx = await stakingContract?.stakeNFT(nft.tokenID);
+        console.log(tx);
+      }, 2000);
     } catch (err) {
       console.log(err);
     }
   };
   const unStakeNft = async () => {
     try {
-      const tx = await stakingContract?.unStakeNFT(1);
+      const tx = await stakingContract?.unStakeNFT(nft.tokenID);
       console.log(tx);
       const approve = await nftContract?.setApprovalForAll(
         StakingAbi.address,
@@ -68,6 +77,7 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
             name: data.name,
             image: data.image,
             desc: data.description,
+            tokenID: tokenId,
           });
         } catch (err) {
           console.log(err);
@@ -75,7 +85,7 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
       };
       getData();
     }
-  }, [url]);
+  }, [tokenId, url]);
 
   return (
     <div>
