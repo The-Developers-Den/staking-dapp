@@ -10,7 +10,8 @@ import Navbar from "@/components/Navbar";
 
 const { chains, provider } = configureChains(
   [polygon, polygonMumbai],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY! }), publicProvider()]
+  // [alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY! }), publicProvider()]
+  [publicProvider()]
 );
 const { connectors } = getDefaultWallets({
   appName: "My Staking Dpp",

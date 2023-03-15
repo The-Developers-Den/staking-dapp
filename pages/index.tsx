@@ -1,11 +1,12 @@
 import Head from "next/head";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Navbar from "@/components/Navbar";
 import { useAccount, useContract, useSigner } from "wagmi";
 import TokenAbi from "@/ABIs/BuidlToken.json";
-import NFTAbi from "@/ABIs/BuidlNFT.json";
 import StakingAbi from "@/ABIs/Staking.json";
+import NFTAbi from "@/ABIs/BuidlNFT.json";
 import { ethers } from "ethers";
+import TokenBal from "@/components/Modal/TokenBal";
+import StakedNft from "@/components/Modal/StakedNft";
+import UnstakedNft from "@/components/Modal/UnstakedNft";
 
 export default function Home() {
   const { address } = useAccount();
@@ -25,9 +26,7 @@ export default function Home() {
     abi: StakingAbi.abi,
     signerOrProvider: signer,
   });
-  // console.log(tokenContract);
-  // console.log("nft", nftContract);
-  // console.log("staking", stakingContract);
+
   return (
     <>
       <Head>
@@ -37,17 +36,21 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <button
-          onClick={async () => {
-            const tx = await tokenContract?.mintToken(
-              address,
-              ethers.utils.parseEther("10")
-            );
-            console.log(tx);
-          }}
-        >
-          Get token
-        </button>
+        {address ? (
+          <div>
+            <TokenBal />
+            <StakedNft />
+            <UnstakedNft />
+          </div>
+        ) : (
+          <div className="flex justify-center">
+            <section className="px-5 border rounded-lg my-20 shadow-lg bg-[#0000009d]">
+              <h2 className="text-2xl my-10">
+                Connect wallet to get started !!
+              </h2>
+            </section>
+          </div>
+        )}
       </main>
     </>
   );

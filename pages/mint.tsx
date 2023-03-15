@@ -26,6 +26,7 @@ const Mint: NextPage = () => {
       console.log(err);
     }
   };
+
   //   const tokenUri = async () => {
   //     try {
   //       const tx = await nftContract?.tokenURI(2);
