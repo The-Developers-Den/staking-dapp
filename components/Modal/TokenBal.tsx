@@ -25,8 +25,6 @@ const TokenBal = () => {
       const getReward = async () => {
         try {
           const reward = await stakingContract?.calculateReward(address);
-          console.log(reward);
-          console.log(ethers.utils.formatUnits(reward, 18));
           setRewardBal(ethers.utils.formatUnits(reward, 18));
         } catch (err) {
           console.log(err);
@@ -35,7 +33,7 @@ const TokenBal = () => {
       const getBalance = async () => {
         try {
           const tokenBalance = await tokenContract?.balanceOf(address);
-          console.log(ethers.utils.formatEther(tokenBalance));
+         
           setTokenBal(ethers.utils.formatEther(tokenBalance));
         } catch (err) {
           console.log(err);

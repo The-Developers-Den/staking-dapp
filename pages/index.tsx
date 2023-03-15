@@ -1,30 +1,11 @@
 import Head from "next/head";
 import { useAccount, useContract, useSigner } from "wagmi";
-import TokenAbi from "@/ABIs/BuidlToken.json";
-import StakingAbi from "@/ABIs/Staking.json";
-import NFTAbi from "@/ABIs/BuidlNFT.json";
 import TokenBal from "@/components/Modal/TokenBal";
 import StakedNft from "@/components/Modal/StakedNft";
 import UnstakedNft from "@/components/Modal/UnstakedNft";
 
 export default function Home() {
   const { address } = useAccount();
-  const { data: signer } = useSigner();
-  const tokenContract = useContract({
-    address: TokenAbi.address,
-    abi: TokenAbi.abi,
-    signerOrProvider: signer,
-  });
-  const nftContract = useContract({
-    address: NFTAbi.address,
-    abi: NFTAbi.abi,
-    signerOrProvider: signer,
-  });
-  const stakingContract = useContract({
-    address: StakingAbi.address,
-    abi: StakingAbi.abi,
-    signerOrProvider: signer,
-  });
 
   return (
     <>

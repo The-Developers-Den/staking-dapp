@@ -5,7 +5,7 @@ import NFTAbi from "@/ABIs/BuidlNFT.json";
 import { useAccount, useSigner, useContract } from "wagmi";
 
 const Mint: NextPage = () => {
-  const router = useRouter();
+  //   const router = useRouter();
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const nftContract = useContract({
@@ -13,7 +13,7 @@ const Mint: NextPage = () => {
     abi: NFTAbi.abi,
     signerOrProvider: signer,
   });
-  console.log(nftContract);
+
   const mintNFT = async () => {
     try {
       const tx = await nftContract?.safeMint(
@@ -26,17 +26,6 @@ const Mint: NextPage = () => {
       console.log(err);
     }
   };
-
-  //   const tokenUri = async () => {
-  //     try {
-  //       const tx = await nftContract?.tokenURI(2);
-  //       console.log("TX:", tx);
-  //       //   router.push("/");
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
   return (
     <div>
       {address && (

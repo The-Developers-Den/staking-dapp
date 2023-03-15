@@ -17,7 +17,7 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
     abi: NFTAbi.abi,
     signerOrProvider: signer,
   });
-  console.log(nftContract);
+
   const [nft, setNft] = useState<{
     name: string;
     image: string;
@@ -26,7 +26,18 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
   }>({ name: "", image: "", desc: "", tokenID: 2 });
   const stakeNft = async () => {
     try {
-      //   const approve = nftContract?.setApprovalForAll(StakingAbi.address, true);
+      const approve = await nftContract?.isApprovedForAll(
+        address,
+        StakingAbi.address
+      );
+      console.log(approve);
+      if (!approve) {
+        const tx = await nftContract?.setApprovalForAll(
+          StakingAbi.address,
+          true
+        );
+        console.log(tx);
+      }
       const tx = await stakingContract?.stakeNFT(1);
       console.log(tx);
     } catch (err) {
@@ -35,17 +46,6 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
   };
   const unStakeNft = async () => {
     try {
-      const approve = nftContract?.isApprovalForAll(
-        address,
-        StakingAbi.address
-      );
-      if (!approve) {
-        const tx = await nftContract?.setApprovalForAll(
-          StakingAbi.address,
-          true
-        );
-        console.log(tx);
-      }
       const tx = await stakingContract?.unStakeNFT(1);
       console.log(tx);
     } catch (err) {
@@ -54,12 +54,11 @@ const NFTCard = ({ url, stake }: { url: string; stake: boolean }) => {
   };
   useEffect(() => {
     if (url) {
-      console.log(url);
       const getData = async () => {
         try {
           const res = await fetch(url);
           const data = await res.json();
-          console.log(data);
+
           setNft({
             name: data.name,
             image: data.image,

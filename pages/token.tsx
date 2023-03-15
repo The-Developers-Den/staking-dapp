@@ -14,7 +14,7 @@ const Mint: NextPage = () => {
     abi: TokenAbi.abi,
     signerOrProvider: signer,
   });
-  console.log(tokenContract);
+
   const getToken = async () => {
     try {
       const tx = await tokenContract?.mintToken(
