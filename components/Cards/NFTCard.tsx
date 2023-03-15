@@ -48,6 +48,7 @@ const NFTCard = ({
       setTimeout(async () => {
         const tx = await stakingContract?.stakeNFT(nft.tokenID);
         console.log(tx);
+        window.alert("NFT Stake Successful");
       }, 2000);
     } catch (err) {
       console.log(err);
@@ -62,6 +63,7 @@ const NFTCard = ({
         false
       );
       console.log(tx);
+      window.alert("NFT Unstake Successful");
     } catch (err) {
       console.log(err);
     }

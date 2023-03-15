@@ -5,7 +5,7 @@ import NFTAbi from "@/ABIs/BuidlNFT.json";
 import { useAccount, useSigner, useContract } from "wagmi";
 
 const Mint: NextPage = () => {
-  //   const router = useRouter();
+  const router = useRouter();
   const { data: signer } = useSigner();
   const { address } = useAccount();
   const nftContract = useContract({
@@ -21,7 +21,8 @@ const Mint: NextPage = () => {
         "https://bafkreih73g4bdfee55w7izme3ryt6imjuh2nykdnxxpwe6eepdqrrkjcjm.ipfs.nftstorage.link/"
       );
       console.log(tx);
-      //   router.push("/");
+      window.alert("NFT Minted");
+      router.push("/");
     } catch (err) {
       console.log(err);
     }
