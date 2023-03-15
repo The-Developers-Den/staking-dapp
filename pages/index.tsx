@@ -3,7 +3,6 @@ import { useAccount, useContract, useSigner } from "wagmi";
 import TokenAbi from "@/ABIs/BuidlToken.json";
 import StakingAbi from "@/ABIs/Staking.json";
 import NFTAbi from "@/ABIs/BuidlNFT.json";
-import { ethers } from "ethers";
 import TokenBal from "@/components/Modal/TokenBal";
 import StakedNft from "@/components/Modal/StakedNft";
 import UnstakedNft from "@/components/Modal/UnstakedNft";
