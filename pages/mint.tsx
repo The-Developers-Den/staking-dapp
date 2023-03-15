@@ -13,17 +13,41 @@ const Mint: NextPage = () => {
     abi: NFTAbi.abi,
     signerOrProvider: signer,
   });
+  console.log(nftContract);
   const mintNFT = async () => {
     try {
-      const tx = await nftContract?.mintNFT(address);
+      const tx = await nftContract?.safeMint(
+        address,
+        "https://bafkreibl3ntsvrilgz5kicqsq27zb26a3tpym3wx3kwxuerg6mpf5ge674.ipfs.nftstorage.link/"
+      );
       console.log(tx);
-      router.push("/");
+      //   router.push("/");
     } catch (err) {
       console.log(err);
     }
   };
+  //   const tokenUri = async () => {
+  //     try {
+  //       const tx = await nftContract?.tokenURI(2);
+  //       console.log("TX:", tx);
+  //       //   router.push("/");
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
 
-  return <div>Mint</div>;
+  return (
+    <div>
+      {address && (
+        <button
+          className="p-3 bg-[#ff1] text-black text-lg rounded-xl mx-[50%] min-w-[150px] my-5 hover:scale-105 font-medium"
+          onClick={mintNFT}
+        >
+          Mint NFT
+        </button>
+      )}
+    </div>
+  );
 };
 
 export default Mint;
