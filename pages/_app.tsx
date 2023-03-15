@@ -6,6 +6,7 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { polygon, polygonMumbai } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import Navbar from "@/components/Navbar";
 
 const { chains, provider } = configureChains(
   [polygon, polygonMumbai],
@@ -24,6 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} modalSize="compact">
+        <Navbar />
         <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>

@@ -37,8 +37,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Navbar />
-
         <button
           onClick={async () => {
             const tx = await tokenContract?.mintToken(
