@@ -2,27 +2,28 @@ import "@/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { polygon, polygonMumbai } from "wagmi/chains";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
 import Navbar from "@/components/Navbar";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { http, WagmiProvider } from "wagmi";
+import { sepolia } from "wagmi/chains";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-const { chains, provider } = configureChains(
-  [polygon, polygonMumbai],
-  // [alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY! }), publicProvider()]
-  [publicProvider()]
-);
-const { connectors } = getDefaultWallets({
-  appName: "My Staking Dpp",
-  chains,
+const config = getDefaultConfig({
+  appName: "My Staking Dapp",
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID ?? "",
+  chains: [
+    {
+      ...sepolia,
+      rpcUrls: {
+        default: {
+          http: [process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? ""],
+        },
+      },
+    },
+  ],
 });
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-});
+const queryClient = new QueryClient();
+
 export default function App({ Component, pageProps }: AppProps) {
   const [ready, setReady] = useState(false);
 
@@ -31,16 +32,18 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <>
-    {ready ? (
-      <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains} modalSize="compact">
-          <Navbar />
-          <Component {...pageProps} />
-        </RainbowKitProvider>
-      </WagmiConfig>
-    ) : (
-      <div className="flex justify-center text-2xl my-[50%]">Loading</div>
-    )}
-  </>
+      {ready ? (
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider modalSize="compact">
+              <Navbar />
+              <Component {...pageProps} />
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
+      ) : (
+        <div className="flex justify-center text-2xl my-[50%]">Loading</div>
+      )}
+    </>
   );
 }
